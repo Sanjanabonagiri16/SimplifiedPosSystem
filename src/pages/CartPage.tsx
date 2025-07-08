@@ -3,6 +3,7 @@ import React from 'react';
 import Cart from './Cart';
 import { useCartContext } from '@/components/CartProvider';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const CartPage = () => {
   const {
@@ -17,18 +18,59 @@ const CartPage = () => {
 
   const { toast } = useToast();
 
-  const handleSendToKitchen = () => {
+  const handleSendToKitchen = async () => {
     if (cartItems.length === 0) return;
     
-    toast({
-      title: "Order Sent to Kitchen! 🍽️",
-      description: `${getTotalItems()} items sent for preparation. Total: $${(getTotalPrice() * 1.085).toFixed(2)}`,
-    });
-    
-    // Clear the cart after sending to kitchen
-    setTimeout(() => {
-      clearCart();
-    }, 2000);
+    try {
+      const totalAmount = getTotalPrice();
+      const taxAmount = totalAmount * 0.085;
+      
+      // Create order in database
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          total_amount: totalAmount,
+          tax_amount: taxAmount,
+          status: 'pending'
+        })
+        .select()
+        .single();
+      
+      if (orderError) throw orderError;
+      
+      // Insert order items
+      const orderItems = cartItems.map(item => ({
+        order_id: order.id,
+        menu_item_id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price,
+        total_price: item.price * item.quantity
+      }));
+      
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+      
+      if (itemsError) throw itemsError;
+      
+      toast({
+        title: "Order Sent to Kitchen! 🍽️",
+        description: `Order #${order.id.slice(0, 8)} with ${getTotalItems()} items sent for preparation. Total: $${(totalAmount + taxAmount).toFixed(2)}`,
+      });
+      
+      // Clear the cart after sending to kitchen
+      setTimeout(() => {
+        clearCart();
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error sending order to kitchen:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send order to kitchen. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
