@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MenuGrid from '@/components/MenuGrid';
-import { useCart } from '@/hooks/useCart';
+import { useCartContext } from '@/components/CartProvider';
 import { Link } from 'react-router-dom';
 import { ArrowDown } from 'lucide-react';
 
@@ -14,7 +14,7 @@ const Index = () => {
     addItem,
     getTotalPrice,
     getTotalItems
-  } = useCart();
+  } = useCartContext();
 
   const handleItemSelect = (item: any) => {
     addItem(item);
