@@ -33,17 +33,21 @@ const Cart: React.FC<CartProps> = ({
   onSendToKitchen
 }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pos-surface via-background to-muted p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 animate-fade-in">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Order Cart</h1>
-            <p className="text-gray-600 mt-1">Review and manage your order</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Order Cart</h1>
+            <p className="text-muted-foreground text-lg mt-1">Review and manage your order</p>
           </div>
           <Link to="/menu">
-            <Button variant="outline" className="flex items-center gap-2">
-              <ArrowDown className="h-4 w-4 rotate-90" />
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="bg-gradient-to-r from-secondary/10 to-secondary/20 hover:from-secondary/20 hover:to-secondary/30 border-secondary/30 hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              <ArrowDown className="h-5 w-5 rotate-90" />
               Back to Menu
             </Button>
           </Link>
@@ -109,9 +113,9 @@ const Cart: React.FC<CartProps> = ({
                 <Button
                   onClick={onSendToKitchen}
                   disabled={cartItems.length === 0}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-pos-success to-accent hover:from-pos-success/90 hover:to-accent/90 text-white py-4 text-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
-                  <Send className="h-5 w-5 mr-2" />
+                  <Send className="h-6 w-6 mr-3" />
                   Send to Kitchen
                 </Button>
 

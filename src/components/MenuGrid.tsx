@@ -43,20 +43,20 @@ const MenuGrid: React.FC<MenuGridProps> = ({ onItemSelect, selectedItems }) => {
   }, []);
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Coffee': return 'from-amber-100 to-amber-200 border-amber-300';
-      case 'Tea': return 'from-green-100 to-green-200 border-green-300';
-      case 'Pastry': return 'from-orange-100 to-orange-200 border-orange-300';
-      case 'Food': return 'from-blue-100 to-blue-200 border-blue-300';
-      default: return 'from-gray-100 to-gray-200 border-gray-300';
+      case 'Coffee': return 'from-amber-50 via-amber-100 to-amber-200 border-amber-300/50 hover:from-amber-100 hover:to-amber-300';
+      case 'Tea': return 'from-emerald-50 via-emerald-100 to-emerald-200 border-emerald-300/50 hover:from-emerald-100 hover:to-emerald-300';
+      case 'Pastry': return 'from-orange-50 via-orange-100 to-orange-200 border-orange-300/50 hover:from-orange-100 hover:to-orange-300';
+      case 'Food': return 'from-blue-50 via-blue-100 to-blue-200 border-blue-300/50 hover:from-blue-100 hover:to-blue-300';
+      default: return 'from-slate-50 via-slate-100 to-slate-200 border-slate-300/50 hover:from-slate-100 hover:to-slate-300';
     }
   };
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
         {[...Array(16)].map((_, index) => (
-          <Card key={index} className="animate-pulse">
-            <CardContent className="p-4 bg-gray-200 h-32" />
+          <Card key={index} className="animate-pulse shadow-lg">
+            <CardContent className="p-6 bg-gradient-to-br from-muted/50 to-muted h-36 rounded-lg" />
           </Card>
         ))}
       </div>
@@ -64,27 +64,32 @@ const MenuGrid: React.FC<MenuGridProps> = ({ onItemSelect, selectedItems }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
-      {menuItems.map((item) => {
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
+      {menuItems.map((item, index) => {
         const isSelected = selectedItems.includes(item.id);
         return (
           <Card 
             key={item.id}
-            className={`cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
-              isSelected ? 'ring-2 ring-blue-500 shadow-lg scale-105' : ''
+            className={`cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl border-2 shadow-lg hover:shadow-2xl animate-fade-in ${
+              isSelected 
+                ? 'ring-4 ring-primary/30 shadow-2xl scale-105 border-primary/50' 
+                : 'hover:border-accent/50'
             }`}
+            style={{ animationDelay: `${index * 50}ms` }}
             onClick={() => onItemSelect(item)}
           >
-            <CardContent className={`p-4 bg-gradient-to-br ${getCategoryColor(item.category)} h-32 flex flex-col justify-between`}>
-              <div>
-                <h3 className="font-semibold text-gray-800 text-sm md:text-base">{item.name}</h3>
-                <p className="text-xs text-gray-600 mt-1">{item.category}</p>
+            <CardContent className={`p-6 bg-gradient-to-br ${getCategoryColor(item.category)} h-36 flex flex-col justify-between rounded-lg backdrop-blur-sm`}>
+              <div className="space-y-2">
+                <h3 className="font-bold text-foreground text-lg leading-tight">{item.name}</h3>
+                <p className="text-sm text-muted-foreground font-medium">{item.category}</p>
               </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="font-bold text-gray-800">${item.price.toFixed(2)}</span>
+              <div className="flex justify-between items-center mt-4">
+                <span className="font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  ${item.price.toFixed(2)}
+                </span>
                 {isSelected && (
-                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                    <span className="text-primary-foreground text-sm font-bold">✓</span>
                   </div>
                 )}
               </div>

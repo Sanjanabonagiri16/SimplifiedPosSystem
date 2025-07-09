@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MenuGrid from '@/components/MenuGrid';
 import { useCartContext } from '@/components/CartProvider';
 import { Link } from 'react-router-dom';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, ArrowLeft, Users, ShoppingCart } from 'lucide-react';
 
 const Index = () => {
   const {
@@ -21,24 +21,39 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-pos-surface via-background to-muted">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-gradient-to-r from-card to-background shadow-lg border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Café POS</h1>
-              <p className="text-gray-600 text-sm md:text-base">Select items to add to your order</p>
+            <div className="flex items-center gap-4">
+              <Link to="/">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="bg-gradient-to-r from-secondary/10 to-secondary/20 hover:from-secondary/20 hover:to-secondary/30 border-secondary/30 hover:scale-105 transition-all duration-300"
+                >
+                  <ArrowLeft className="mr-2 h-5 w-5" />
+                  <Users className="mr-2 h-5 w-5" />
+                  Tables
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  Café POS Menu
+                </h1>
+                <p className="text-muted-foreground text-lg">Select items to add to your order</p>
+              </div>
             </div>
             
             {/* Cart Summary */}
             <div className="flex items-center gap-4">
               {getTotalItems() > 0 && (
-                <div className="text-right">
-                  <p className="text-sm text-gray-600">
+                <div className="text-right animate-fade-in">
+                  <p className="text-sm text-muted-foreground">
                     {getTotalItems()} items
                   </p>
-                  <p className="font-bold text-lg text-gray-800">
+                  <p className="font-bold text-xl bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
                     ${getTotalPrice().toFixed(2)}
                   </p>
                 </div>
@@ -46,13 +61,14 @@ const Index = () => {
               
               <Link to="/cart">
                 <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-105"
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   disabled={getTotalItems() === 0}
                 >
+                  <ShoppingCart className="mr-2 h-5 w-5" />
                   View Cart
-                  <ArrowDown className="ml-2 h-4 w-4 -rotate-90" />
                   {getTotalItems() > 0 && (
-                    <span className="ml-1 bg-blue-800 text-white rounded-full px-2 py-0.5 text-xs">
+                    <span className="ml-2 bg-primary-foreground/20 text-primary-foreground rounded-full px-3 py-1 text-sm font-bold">
                       {getTotalItems()}
                     </span>
                   )}
@@ -64,13 +80,17 @@ const Index = () => {
       </div>
 
       {/* Menu Grid */}
-      <div className="max-w-7xl mx-auto">
-        <Card className="m-4 shadow-lg">
-          <CardHeader className="bg-white">
-            <CardTitle className="text-xl text-gray-800">Menu Items</CardTitle>
-            <p className="text-gray-600">Click on items to add them to your cart</p>
+      <div className="max-w-7xl mx-auto p-4">
+        <Card className="shadow-2xl border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm animate-fade-in">
+          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 border-b border-border/50">
+            <CardTitle className="text-2xl text-foreground flex items-center gap-2">
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Menu Items
+              </span>
+            </CardTitle>
+            <p className="text-muted-foreground text-lg">Click on items to add them to your cart with smooth animations</p>
           </CardHeader>
-          <CardContent className="p-0 bg-gray-50">
+          <CardContent className="p-0 bg-gradient-to-br from-pos-surface/30 to-muted/30">
             <MenuGrid 
               onItemSelect={handleItemSelect}
               selectedItems={selectedItems}
@@ -79,11 +99,16 @@ const Index = () => {
         </Card>
       </div>
 
-      {/* Footer */}
-      <div className="text-center py-8 text-gray-500">
-        <p className="text-sm">
-          Select items from the grid above • Total: ${getTotalPrice().toFixed(2)}
-        </p>
+      {/* Enhanced Footer with slide-up animation */}
+      <div className="text-center py-8 animate-slide-up">
+        <div className="bg-gradient-to-r from-card/80 to-background/80 backdrop-blur-sm rounded-lg mx-auto max-w-md py-4 px-6 shadow-lg">
+          <p className="text-muted-foreground">
+            Select items from the grid above
+          </p>
+          <p className="font-bold text-lg bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+            Total: ${getTotalPrice().toFixed(2)}
+          </p>
+        </div>
       </div>
     </div>
   );
