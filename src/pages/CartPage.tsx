@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Cart from './Cart';
 import { useCartContext } from '@/components/CartProvider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useOrderUpdates } from '@/hooks/useOrderUpdates';
 
 const CartPage = () => {
   const {
@@ -17,6 +18,25 @@ const CartPage = () => {
   } = useCartContext();
 
   const { toast } = useToast();
+  const { orders } = useOrderUpdates(); // Real-time order updates
+
+  // Show real-time order status updates
+  useEffect(() => {
+    if (orders.length > 0) {
+      const latestOrder = orders[0];
+      if (latestOrder.status === 'preparing') {
+        toast({
+          title: "Order Update! 👨‍🍳",
+          description: `Order #${latestOrder.id.slice(0, 8)} is now being prepared in the kitchen.`,
+        });
+      } else if (latestOrder.status === 'ready') {
+        toast({
+          title: "Order Ready! 🎉",
+          description: `Order #${latestOrder.id.slice(0, 8)} is ready for pickup!`,
+        });
+      }
+    }
+  }, [orders, toast]);
 
   const handleSendToKitchen = async () => {
     if (cartItems.length === 0) return;

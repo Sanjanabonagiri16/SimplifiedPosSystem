@@ -40,6 +40,26 @@ const MenuGrid: React.FC<MenuGridProps> = ({ onItemSelect, selectedItems }) => {
     };
 
     fetchMenuItems();
+
+    // Set up real-time subscription for menu items
+    const channel = supabase
+      .channel('menu-items-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items'
+        },
+        () => {
+          fetchMenuItems();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
   const getCategoryColor = (category: string) => {
     switch (category) {
