@@ -52,6 +52,7 @@ export type Database = {
           created_at: string
           id: string
           menu_item_id: number
+          modifiers: string | null
           order_id: string
           quantity: number
           total_price: number
@@ -61,6 +62,7 @@ export type Database = {
           created_at?: string
           id?: string
           menu_item_id: number
+          modifiers?: string | null
           order_id: string
           quantity: number
           total_price: number
@@ -70,6 +72,7 @@ export type Database = {
           created_at?: string
           id?: string
           menu_item_id?: number
+          modifiers?: string | null
           order_id?: string
           quantity?: number
           total_price?: number
@@ -96,6 +99,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          notes: string | null
           status: string
           table_number: number | null
           tax_amount: number
@@ -105,6 +109,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          notes?: string | null
           status?: string
           table_number?: number | null
           tax_amount?: number
@@ -114,11 +119,30 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          notes?: string | null
           status?: string
           table_number?: number | null
           tax_amount?: number
           total_amount?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      tables: {
+        Row: {
+          id: number
+          status: string
+          table_number: number
+        }
+        Insert: {
+          id?: number
+          status: string
+          table_number: number
+        }
+        Update: {
+          id?: number
+          status?: string
+          table_number?: number
         }
         Relationships: []
       }

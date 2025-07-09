@@ -41,7 +41,7 @@ const Cart: React.FC<CartProps> = ({
             <h1 className="text-3xl font-bold text-gray-800">Order Cart</h1>
             <p className="text-gray-600 mt-1">Review and manage your order</p>
           </div>
-          <Link to="/">
+          <Link to="/menu">
             <Button variant="outline" className="flex items-center gap-2">
               <ArrowDown className="h-4 w-4 rotate-90" />
               Back to Menu
